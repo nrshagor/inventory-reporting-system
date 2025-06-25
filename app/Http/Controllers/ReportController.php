@@ -12,16 +12,25 @@ class ReportController extends Controller
         $from = $request->query('from');
         $to = $request->query('to');
 
-        $sales = Sale::whereBetween('created_at', [$from, $to])->get();
+        $sales = Sale::with('saleItems.product')
+            ->whereBetween('created_at', [$from, $to])
+            ->get();
 
         $totalSales = $sales->sum('total');
-        $totalExpenses = $sales->sum(fn($sale) => $sale->saleItems->sum(fn($item) => $item->quantity * $item->product->purchase_price));
+        $totalExpenses = 0;
+
+        foreach ($sales as $sale) {
+            foreach ($sale->saleItems as $item) {
+                $totalExpenses += $item->quantity * $item->product->purchase_price;
+            }
+        }
+
         $profit = $totalSales - $totalExpenses;
 
         return response()->json([
-            'total_sales' => $totalSales,
-            'total_expenses' => $totalExpenses,
-            'profit' => $profit,
+            'total_sales' => round($totalSales, 2),
+            'total_expenses' => round($totalExpenses, 2),
+            'profit' => round($profit, 2),
         ]);
     }
 }
