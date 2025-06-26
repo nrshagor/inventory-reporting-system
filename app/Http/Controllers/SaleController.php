@@ -10,7 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
+
 {
+
+    public function index()
+    {
+        $products = Product::all();
+        return view('sale.index', compact('products'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
