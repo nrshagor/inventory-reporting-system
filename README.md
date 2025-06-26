@@ -1,61 +1,142 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📦 Inventory & Financial Reporting System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a Laravel 12-based simple inventory management system with full accounting journals and financial reporting features.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   ✅ Product Management (Create + Stock)
+-   ✅ Sale Module (Multi-product, discount, VAT, due)
+-   ✅ Accounting Journal (Sales, Discount, VAT, Payment)
+-   ✅ Financial Reports (Date-wise filter, profit calculation)
+-   ✅ Clean UI with Blade + Tailwind + Dark Mode
+-   ✅ Responsive, mobile-friendly layout
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   Laravel 12
+-   PHP 8.2
+-   MySQL
+-   Tailwind CSS
+-   Laravel Breeze (for auth + UI)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚙Installation Instructions
 
-## Laravel Sponsors
+### 1. Clone the project
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/nrshagor/inventory-reporting-system.git
+cd inventory-system
+```
 
-### Premium Partners
+### 2. Install dependencies
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer install
+npm install && npm run dev
+```
 
-## Contributing
+### 3. Environment Setup
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Code of Conduct
+### 4. Update .env File
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+APP_NAME=InventorySystem
+APP_URL=http://inventory-system.local:8000
 
-## Security Vulnerabilities
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=inventory_system
+DB_USERNAME=root
+DB_PASSWORD=
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Set Breeze session correctly
+SESSION_DOMAIN=.local
+SESSION_COOKIE=shared_session
+```
 
-## License
+### 5. Hosts File Configuration (For APP_URL)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Make sure to point inventory-system.local in your OS hosts file:
+
+```bash
+# Windows: C:\Windows\System32\drivers\etc\hosts
+# Linux/Mac: /etc/hosts
+
+127.0.0.1 inventory-system.local
+```
+
+### 6. Serve the App
+
+#### Run the local development server with a custom port:
+
+```bash
+php artisan serve --host=inventory-system.local --port=8000
+```
+
+#### Access: http://inventory-system.local:8000
+
+### 7. Create Database
+
+#### Create the database in MySQL:
+
+```bash
+CREATE DATABASE inventory_system;
+```
+
+### Run Migrations and Seed Default Products
+
+```bash
+php artisan migrate --seed
+
+```
+
+#### If Default product not seed used this command
+
+```bash
+php artisan db:seed --class=ProductSeeder
+```
+
+#### This will:
+
+-   Create all necessary tables
+-   Seed 10 default products with:
+-   Purchase Price: 100 TK
+-   Sell Price: 200 TK
+-   Stock: 50 units
+
+### Available Pages
+
+| Route       | Description                |
+| :---------- | :------------------------- |
+| `/login	`    | Auth Login/Register        |
+| `/products	` | Add product + product list |
+| `/sales	`    | Create sale                |
+| `/report	`   | View financial report      |
+
+### API Endpoints
+
+| Method | Endpoint        | Description              |
+| :----- | :-------------- | :----------------------- |
+| `GET`  | `/api/products` | Get product list         |
+| `POST` | `/api/sales`    | Submit sale entry        |
+| `POST` | `/api/report`   | Get report by date range |
+
+## Developer Info
+
+#### Noore Rabbi Shagor
+
+#### noorerabbishagor@gmail.com
+
+#### https://nrshagor.com
