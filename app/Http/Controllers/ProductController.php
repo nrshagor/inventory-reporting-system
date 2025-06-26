@@ -9,7 +9,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return view('product.index');
+        $products = Product::latest()->get();
+        return view('product.index', compact('products'));
     }
 
     public function store(Request $request)
